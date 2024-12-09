@@ -1,0 +1,722 @@
+/* Cupra Bold */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Cupra Bold Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Boldltalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Cupra Book */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Cupra Book Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Bookltalic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Cupra Display Regular */
+@font-face {
+    font-family: 'CupraDisplay';
+    src: url('fonts/CupraDisplay-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Cupra ExtraBold */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* Cupra ExtraBold Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-ExtraBoldltalic.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+}
+
+/* Cupra ExtraLight */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Cupra ExtraLight Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-ExtraLightltalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+}
+
+/* Cupra Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Cupra Light */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Cupra Light Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Lightltalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Cupra Medium */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Cupra Medium Italic */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Mediumltalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Cupra Multiscript Bold */
+@font-face {
+    font-family: 'CupraMultiscript';
+    src: url('fonts/CupraMultiscript-Bold.woff2') format('woff2'),
+         url('fonts/CupraMultiscript-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Cupra Multiscript Book */
+@font-face {
+    font-family: 'CupraMultiscript';
+    src: url('fonts/CupraMultiscript-Book.woff2') format('woff2'),
+         url('fonts/CupraMultiscript-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Cupra Multiscript Light */
+@font-face {
+    font-family: 'CupraMultiscript';
+    src: url('fonts/CupraMultiscript-Light.woff2') format('woff2'),
+         url('fonts/CupraMultiscript-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Cupra Multiscript Medium */
+@font-face {
+    font-family: 'CupraMultiscript';
+    src: url('fonts/CupraMultiscript-Medium.woff2') format('woff2'),
+         url('fonts/CupraMultiscript-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Cupra Multiscript Regular */
+@font-face {
+    font-family: 'CupraMultiscript';
+    src: url('fonts/CupraMultiscript-Regular.woff2') format('woff2'),
+         url('fonts/CupraMultiscript-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Cupra Regular */
+@font-face {
+    font-family: 'Cupra';
+    src: url('fonts/Cupra-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* ASSETS */
+
+@media (min-width: 0px) {
+    .event-card {
+        height: 100vw;
+    }
+}
+
+@media (min-width: 768px) {  /*md*/
+    .event-card {
+        height: 50vw;
+    }
+}
+
+@media (min-width: 992px) { /*lg*/
+    .event-card {
+        height: 33vw;
+    }
+}
+
+.button-add-to-bag{
+    padding: 15px;
+    background-color: var(--DarkPeacock);
+    font-weight: 600;
+    color: var(--OxygenWhite);
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+}
+
+.quantity-button{
+    width: 100px;
+    height: 57px;
+    text-align: center;
+}
+
+.product-actions{
+    gap: 15px;
+    align-items: center;
+}
+
+.row .event-card{
+    padding: 0%;
+}
+
+.button-primary-dark{
+    color: #1b1b1b;
+    text-decoration: none;
+    padding: 15px;
+    background-color: #DBD3CB;
+}
+  
+.button-primary-dark:hover{
+    background-color: #f0ece7;
+}
+
+.category-card{
+    background-size: cover;
+    text-align: center;
+    margin-top: 30px;
+
+    transition:all 0.5s ;
+    -webkit-transition:all 0.5s ;
+    -o-transition:all 0.5s ;
+    -moz-transition:all 0.5s ;
+}
+
+.category-card:hover{
+    background-size:130%;
+    background-position:center;
+}
+
+.category-card div{
+    max-width: 393px;
+    height: 460px;
+    padding-bottom: 20px;
+    background: linear-gradient(180deg, rgba(27,27,27,0) 35%, rgba(27,27,27,1) 100%);
+    color: var(--OxygenWhite);
+    padding: 20px;
+    text-align: center;
+    font-size: x-large;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.event-card{
+    background: gray;
+    background-image: url("../img/CUPRA-Primavera-Sound.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.event-card a{
+    height: 100%;
+
+    color: var(--OxygenWhite);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.event-card a:hover{
+    background-color: #00000084;
+    background-image: url("../img/add_symbol.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30%;
+}
+
+.event-card a *{
+    color: var(--OxygenWhite);
+    padding: 15px;
+}
+
+.event-card a p{
+    font-size:xx-large;
+}
+
+.event-card .bi-plus{
+    font-size: 200px;
+}
+
+.breadcrumb{
+    width: 100%;
+    padding: 20px 60px 20px 60px;
+}
+
+.title{
+    font-size: 48px;
+    width: 100%;
+    text-align: center;
+}
+
+.color-white{
+    color: var(--OxygenWhite);
+}
+
+/* MAIN */
+
+:root{
+    /* colors */
+    --DarkPeacock:  #045c55;
+    --CupraPetrol:  #003E51;
+    --PitchBlack:   #000000;
+    --CupraCopper:  #95572b;
+    --DessertSand:  #d9cebd;
+    --EngineGrey:   #75787b;
+    --OxygenWhite:  #f8f8f8;
+
+}
+
+html{
+    overflow-x: hidden;
+}
+
+html * {
+    font-family: 'Cupra',Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+body{
+    background-color: #F4F4F3;
+}
+
+a{
+    text-decoration: none;
+}
+
+header{
+    color: var(--OxygenWhite);
+    font-size: 16px;
+    z-index: 15;
+}
+
+#preHeader .carousel-item{
+    background-color: var(--DarkPeacock);
+    color: var(--OxygenWhite);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottomHeader{
+    background-color: #1b1b1b;
+    color: var(--OxygenWhite);
+    height: 83px;
+    padding: 10px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 15;
+}
+
+.header-logo{
+    height: 48px;
+    width: 180px;
+    margin-right: 80px;
+}
+
+.screen-darken{
+    content: ''; 
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    pointer-events: none;
+    z-index:10; opacity:1; 
+    visibility:visible;
+    position: fixed;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+header .material-icons-outlined{
+    position: relative;
+    top: 5px;
+}
+
+.bottomHeader{
+    --bs-navbar-color: var(--OxygenWhite);
+    --bs-navbar-hover-color: var(--OxygenWhite);
+    --bs-navbar-disabled-color: var(--OxygenWhite);
+    --bs-navbar-active-color: var(--OxygenWhite);
+}
+
+.bottomHeader .dropdown-menu{
+    --bs-dropdown-color: var(--OxygenWhite);
+    --bs-dropdown-bg: #1b1b1b;
+    --bs-dropdown-border: 0px;
+    --bs-dropdown-border-radius: 0px;
+    --bs-dropdown-link-color:var(--OxygenWhite);
+    --bs-dropdown-link-hover-color: none;
+    --bs-dropdown-link-hover-bg: none;
+    --bs-dropdown-link-active-color: none;
+    --bs-dropdown-link-active-bg: none;
+    --bs-dropdown-link-hover-text:
+}
+
+.bottomHeader .dropdown-menu a:hover{
+    text-decoration: underline;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.navUser{
+    gap:40px;
+}
+
+.navUser ul{
+    list-style: none;
+    padding: 0;
+    gap: 15px;
+}
+
+.navUser a{
+    color: white;
+    text-decoration: none;
+}
+
+.navUser-section--alt i{
+    font-size: larger;
+}
+
+.quickSearch form{
+    color: var(--OxygenWhite);
+    background-color: transparent;
+    border: solid 1px var(--OxygenWhite);
+    padding: 5px;
+}
+
+.quickSearch form *{
+    color: var(--OxygenWhite);
+    background-color: transparent;
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: brightness(100);
+}
+
+.navbar-collapse{
+    background-color: #1b1b1b;
+    padding: 15px;
+}
+
+.footer{
+    background-color: #F4F4F3;
+    padding: 50px 260px 28px 60px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* width: 100vw; */
+}
+
+footer ul{
+    list-style: none;
+    padding: 0%;
+    line-height: 2.5;
+}
+
+footer a{
+    text-decoration: none;
+    color: inherit;
+}
+
+footer a:hover{
+    text-decoration:underline;
+}
+
+.footer-first-column{
+    gap: 20px;
+}
+
+footer .socials{
+    gap: 15px;
+    font-size: larger;
+}
+
+/* HOME */
+
+#home-banner{
+    height: 90vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#home-banner video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: inherit;
+    min-width: inherit;
+    z-index:-100;
+}
+  
+/* Add some content at the bottom of the video/page */
+#home-banner .content {
+    position: relative;
+    top: 0;
+    background: linear-gradient(transparent, #1b1b1b);
+    color: #f1f1f1;
+    height: 90vh;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 40px;
+}
+
+#home-banner .content p{
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+}
+
+#home-banner .content div{
+    padding: 50px;
+}
+
+#home-banner .content p:first-child{
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.categories-home{
+    background-color: #1b1b1b;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.categories-home .row{
+    margin: 30px;
+}
+
+.categories-home .row .col-xxl-4{
+    display: flex;
+    justify-content: center;
+}
+
+
+/* CATEGORIAS */
+
+.page-description{
+    padding: 0px 60px 20px 76px;
+}
+
+.page-description *{
+    font-weight: 400;
+    line-height: 2.5rem;
+    margin-top: 30px;
+    width: 80%;
+}
+
+.categorias{
+    padding: 0px 60px 20px 60px;
+}
+
+.categorias .productos-container{
+    padding-left: 25px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* product cards */
+
+.product-card{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.product-card *{
+    font-size:medium;
+}
+
+.product-card h5{
+    font-weight: 400;
+}
+
+.product-card .price{
+    font-weight: bold;
+}
+
+.product-card .product-img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-position: center;
+    background-size: cover;
+    background-color: white;
+    background-repeat: no-repeat;
+}
+
+.product-card .product-img div:first-child{
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.product-card-icons{
+    display: flex;
+    flex-direction: column;
+    padding-right: 5px;
+    gap: 10px;
+}
+
+.product-card-icons i{
+    font-size: larger;
+    padding: 5px;
+    background-color: white;
+    border-radius: 1000px;
+    line-height: 0.5rem;
+    visibility: hidden;
+}
+
+.product-card:hover i{
+    visibility: visible;
+}
+
+.novedad{
+    padding: 5px 7px 5px 7px;
+    height: 100%;
+    border-radius: 3px;
+    background-color: #2A6876;
+    font-size: small;
+    color: white;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+.category-products h2{
+    margin-bottom: 20px;
+}
+
+.category-products{
+    margin-bottom: 30px;
+}
+
+.product-page{
+    padding:20px 60px 20px 60px ;
+}
+
+.product-page .product-details{
+    flex-direction: column;
+    gap: 40px;
+    padding-left: 20px;
+}
+
+.product-page .product-details *{
+    font-size:large ;
+}
+
+.product-page .product-details p:first-child{
+    color: #535353;
+    line-height: 2.5rem;
+}
+
+.product-page .product-details .price{
+    font-size:xx-large;
+    font-weight: 500;
+}
+
+.product-page .product-details h2{
+    font-size:xx-large;
+    font-weight: 600;
+}
+
+.product-page .product-img{
+    height: 100%;
+    max-height: 700px;
+    aspect-ratio:1/1;
+    background-position: center;
+    background-size: cover;
+    background-color: white;
+    background-repeat: no-repeat;
+}
+
+
+/* CARRITO */
+
+@media (min-width: 1025px) {
+    .h-custom {
+    height: 100vh !important;
+    }
+}
+
+.cart .card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+}
+
+.cart .card-registration .select-arrow {
+    top: 13px;
+}
+
+.cart .card-registration{
+    border: none;
+}
+
+.cart .card, .cart .bg-body-tertiary {
+    background-color: transparent;
+}

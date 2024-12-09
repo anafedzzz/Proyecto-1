@@ -1,24 +1,31 @@
-<?php 
-include_once("controller/productoController.php");
+<?php
+include_once("controllers/restaurantController.php");
+include_once("controllers/cartController.php");
+include_once("controllers/articleController.php");
 include_once("config/parameters.php");
 
-if (isset($_GET['controller'])) {
-    echo 'No existe en la URL un controlador';
-}else{
-    $nombre_controller = $_GET['controller']."Controller";
-    if (class_exists($nombre_controller)) {
-        $controller = new $nombre_controller();
+if(!isset($_GET['controller'])) {
+    
+    echo 'No controller found';
+    header("Location:?controller=restaurant&action=home"); 
 
-        if(isset($_GET['action']) && method_exists($controller,$action)){
-            $action=$_GET['action'];
-        }else{
+} else {
+    $controllerName = "{$_GET['controller']}Controller";
+    if(class_exists($controllerName)) {
+        $controller = new $controllerName();
+        if(isset($_GET['action']) && method_exists($controller, $_GET['action'])) {
+            $action = $_GET['action'];
+        } else {
             $action = default_action;
         }
 
         $controller->$action();
-    }else{
-        echo 'No existe el controlador '.$nombre_controller;
+
+    } else {
+        echo "$controllerName not found";
+        header("Location:?controller=restaurant");
     }
 }
+
 
 ?>

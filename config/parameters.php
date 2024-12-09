@@ -2,4 +2,4 @@
 
 define("default_action","index");
 
-define("url","localhost---");
+define("url","localhost/Proyecto1/");

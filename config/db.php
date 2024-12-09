@@ -2,7 +2,7 @@
 
 class DBConnection {
 
-    public static function connection($host = 'localhost', $user = 'root', $password = '', $database = 'test') {
+    public static function connection($host = 'localhost', $user = 'root', $password = 'informatica_1', $database = 'restaurant') {
 
         $connection = new mysqli($host, $user, $password, $database);
         if($connection === false) {
