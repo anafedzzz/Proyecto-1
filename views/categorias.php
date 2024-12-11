@@ -65,7 +65,7 @@
             ?>
 
             <section class="category-products">
-                <h2><?= strtoupper( $category->getName()) ?></h2>
+                <h2 id="<?= strtolower($category->getName())?>"><?= strtoupper( $category->getName()) ?></h2>
                 <div class="row">
                 <?php 
                     foreach ($products as $product) {
@@ -78,11 +78,14 @@
                                     <p class="novedad <?=$novedad;?>">Novedad</p>
                                     <div class="product-card-icons">
                                         <i class="bi bi-heart"></i>
-                                        <i class="bi bi-cart"></i>
+                                        <form action="?controller=producto&action=addCart" method="post">
+                                            <input hidden name="id" value="<?= $product->getId() ?>">
+                                            <button type="submit" class="add-to-cart"><i class="bi bi-cart"></i></button>
+                                        </form>
                                     </div>
                                 </div>    
                             </div>
-                            <a href=""><h5 class="card-title"><?= $product->getName(); ?></h5></a>
+                            <a href="?controller=restaurant&action=product&id=<?= $product->getId()?>"><h5 class="card-title"><?= $product->getName(); ?></h5></a>
                             <p class="price card-text"><?= $product->getPrice(); ?>€</p>
                         </div>
                         <?php

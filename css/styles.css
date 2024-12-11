@@ -620,12 +620,24 @@ footer .socials{
     gap: 10px;
 }
 
+.product-card-icons form{
+    padding: 0%;
+    width: fit-content;
+}
+
+.product-card-icons button{
+    padding: 0%;
+    border: none;
+    background-color: transparent;
+}
+
 .product-card-icons i{
     font-size: larger;
     padding: 5px;
     background-color: white;
     border-radius: 1000px;
     line-height: 0.5rem;
+    text-align: center;
     visibility: hidden;
 }
 

@@ -22,9 +22,9 @@
         <p><?=$product->getDescription()?></p>
         <div>
             <p>Cantidad:</p>
-            <form action=""  class="product-actions d-flex">
+            <form action="?controller=cart&action=addCart" method="post" class="product-actions d-flex">
                 <input value="1" class="quantity-button" type="number" name="quantity" id="">
-                <input type="hidden" name="productId" value="<?=$product->getId()?>">
+                <input type="hidden" name="id" value="<?=$product->getId()?>">
                 <input class="button-add-to-bag" type="submit" value="AÑADIR AL CARRITO">
                 <i class="bi bi-heart"></i>
                 <i class="bi bi-share"></i>
@@ -47,11 +47,14 @@
                         <p class="novedad <?=$novedad;?>">Novedad</p>
                         <div class="product-card-icons">
                             <i class="bi bi-heart"></i>
-                            <i class="bi bi-cart"></i>
+                            <form action="?controller=cart&action=addCart" method="post">
+                                <input hidden name="id" value="<?= $product->getId() ?>">
+                                <button type="submit" class="add-to-cart"><i class="bi bi-cart"></i></button>
+                            </form>
                         </div>
                     </div>    
                 </div>
-                <a href=""><h5 class="card-title"><?= $product->getName(); ?></h5></a>
+                <a href="?controller=restaurant&action=product&id=<?= $product->getId()?>"><h5 class="card-title"><?= $product->getName(); ?></h5></a>
                 <p class="price card-text"><?= $product->getPrice(); ?>€</p>
             </div>
             <?php

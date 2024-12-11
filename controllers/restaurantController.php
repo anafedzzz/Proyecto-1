@@ -11,10 +11,12 @@ class restaurantController {
     public function index() {
         $categories = CategoryDAO::getCategories();
         $bestselling = ArticleDAO::getBestSelling(9);
-         
+        session_start();
+
         $view="views/home.php";
 
         include_once("views/main.php");
+        session_abort();
     }
 
     public function categories() {
@@ -27,7 +29,7 @@ class restaurantController {
     }
 
     public function product() {
-        $product = ArticleDAO::getProduct(2);
+        $product = ArticleDAO::getProduct($_GET['id']);
         $products = ArticleDAO::getRelatedProducts($product->getCategory_id(),$product->getId());
         $category = CategoryDAO::getCategory($product->getCategory_id());
         

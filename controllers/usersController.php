@@ -12,9 +12,12 @@ class usersController{
 
     public function account(){
 
-        $view="views/home.php";
+        session_start();
+
+        $view="views/login.php";
 
         include_once("views/main.php");
+        
     }
 
     public function sessionStart(){
@@ -27,53 +30,78 @@ class usersController{
 
     public function logIn(){
 
+        session_start();
+
         $mail = $_POST['mail'];
         $password = $_POST['password'];
+        if (isset($_POST['rememberMe'])) {
+            $rememberMe =$_POST['rememberMe'];
+        }
+        
 
-        $users = UserDAO::logIn($mail, $password);
+        $user = UserDAO::logIn($mail, $password);
 
-        if ($users != null) {
+        if ($user != null) {
 
-            session_start();
+            $_SESSION['user'] = $user;
 
-            $_SESSION['usuario'] = array();
+            // if ($rememberMe) {
+            //     // Crear datos de la cookie
+            //     $userId = $user->getId();
+            //     $token = bin2hex(random_bytes(32)); // Token aleatorio seguro
+            //     $hash = hash_hmac('sha256', $userId . $token, 'secret_key'); // Genera un hash seguro
+    
+            //     // Almacenar datos en una cookie
+            //     setcookie('remember_me', "$userId|$token|$hash", time() + (30 * 24 * 60 * 60), "/", "", true, true); // 30 días
+            // }
 
-            array_push($_SESSION['usuario'], $users);
-
-            header("Location:?controller=producto");
+            header("Location:?controller=restaurant");
         } else {
 
-            header("Location:?controller=producto&action=sessionStart");
+            header("Location:?controller=users&action=account#pills-login");
         }
+        
     }
 
-    public function register()
-    {
+    public function register(){
+        session_start();
 
         $name = $_POST['name'];
         $surname = $_POST['surname'];
         $mail = $_POST['mail'];
         $password = $_POST['password'];
 
+        $mailExists = UserDAO::checkMail($mail);
 
-        $user = UserDAO::checkMail($mail);
-
-        if ($user) {
+        if (!$mailExists) {
 
             $user = UserDAO::register($name, $surname, $mail, $password);
+
+            if ($user != null) {
+
+                $_SESSION['user'] = $user;
+
+            }else {
+
+                $_SESSION['error'] = "Something went wrong.";
+                header("Location:?controller=users&action=account#pills-register");    
+            }
 
             header("Location:?controller=restaurant");
         } else {
 
-            header("Location:?controller=users&action=sessionStart");
+            $_SESSION['error'] = "The email is already registered. Please try another.";
+            header("Location:?controller=users&action=account#pills-register");
+            var_dump($_SESSION);
         }
+        //
     }
 
     public function userPage()
     {
         session_start();
 
-        $id = $_SESSION['user'][0]->getId();
+        $id = $_SESSION['user']->getId();
 
         $user = UserDAO::getUserById($id);
 
@@ -83,20 +111,17 @@ class usersController{
         //     $ultimoPedido = PedidosDAO::getUltimoPedidoCookies($_COOKIE['ultimoPedido']);
         // }
 
-        // include_once 'views/header.php';
-        // include_once "views/userPage.php";
-        // include_once 'views/footer.php';
     }
 
-    public function cerrarSession()
+    public function logOut()
     {
         session_start();
 
         unset($_SESSION['user']);
 
-        session_destroy();
+        
 
-        header("Location:?controller=producto");
+        header("Location:?controller=restaurant");
     }
 
     public function updateUser()

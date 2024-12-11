@@ -6,20 +6,12 @@ class User {
     private $surname;
     private $email;
     private $password;
-    private $phoneNumber;
+    private $phone_number;
     private $address;
-    private $roleId;
+    private $role_id;
 
     // Constructor
-    public function __construct($name, $surname, $email, $password, $phoneNumber = null, $address = null, $roleId = null) {
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->email = $email;
-        $this->password = $password;
-        $this->phoneNumber = $phoneNumber;
-        $this->address = $address;
-        $this->roleId = $roleId;
-    }
+    public function __construct() {}
 
     // Getters and Setters
     public function getId() {
@@ -54,11 +46,11 @@ class User {
         $this->password = $password;
     }
 
-    public function getPhoneNumber() {
-        return $this->phoneNumber;
+    public function getPhone_number() {
+        return $this->phone_number;
     }
-    public function setPhoneNumber($phoneNumber) {
-        $this->phoneNumber = $phoneNumber;
+    public function setPhone_number($phone_number) {
+        $this->phone_number = $phone_number;
     }
 
     public function getAddress() {
@@ -68,11 +60,11 @@ class User {
         $this->address = $address;
     }
 
-    public function getRoleId() {
-        return $this->roleId;
+    public function getRole_id() {
+        return $this->role_id;
     }
-    public function setRoleId($roleId) {
-        $this->roleId = $roleId;
+    public function setRole_id($role_id) {
+        $this->role_id = $role_id;
     }
 
 }

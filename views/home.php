@@ -10,14 +10,13 @@
         <a class="button-primary-dark" href="#">Probar productos</a>
     </div>
 </section>
-
 <section class="categories-home container-fluid">
     <p class="title color-white">MENU</p>
     <div class="row">
         <?php
         foreach ($categories as $category) {
         ?>
-            <a href="#" class="col-xxl-4">
+            <a href="?controller=restaurant&action=categories#<?= strtolower($category->getName())?>" class="col-xxl-4">
                 <div class="category-card" style="background-image: url('img/<?= $category->getIMG(); ?>');">
                     <div>
                         <p class="title"><?= strtoupper($category->getName()) ?></p>

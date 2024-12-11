@@ -2,6 +2,7 @@
 
 include_once("models/CategoryDAO.php");
 include_once("models/ArticleDAO.php");
+include_once("models/OrderLine.php");
 include_once("models/Complement.php");
 include_once("models/Product.php");
 include_once("models/Category.php");
@@ -10,44 +11,50 @@ class cartController{
 
     public function show() {
         
+        session_start();
+
+        $articles = ArticleDAO::indexArticlesById();
+
         $view="views/carrito.php";
 
         include_once("views/main.php");
     }
 
-    public function addCart()
-    {
+    public function addCart(){
+
+        $quantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 
         session_start();
 
-        if (isset($_SESSION['usuario'])) {
+        if (isset($_SESSION['user'])) {
 
-            if (!isset($_SESSION['carrito'])) {
-                $_SESSION['carrito'] = array();
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = array();
             } else {
                 if (isset($_POST['id'])) {
-                    $producto_id = $_POST['id'];
+                    $article_id = $_POST['id'];
                     $pedidoExistente = false;
 
-                    foreach ($_SESSION['carrito'] as $pedido) {
-                        if ($pedido->getProducto()->getId() == $producto_id) {
-                            $pedido->setCantidad($pedido->getCantidad() + 1);
+                    foreach ($_SESSION['cart'] as $order_line) {
+                        if ($order_line->getArticleId() == $article_id) {
+                            $order_line->setQuantity($order_line->getQuantity() + $quantity);
                             $pedidoExistente = true;
                             break;
                         }
                     }
 
                     if ($pedidoExistente == false) {
-                        // $pedido = new Pedido(ProductoDAO::getProductById($_POST['id']));
-                        // array_push($_SESSION['carrito'], $pedido);
+                        $order_line = new OrderLine($_POST['id'],$quantity,ArticleDAO::getPrice($_POST['id']));
+                        array_push($_SESSION['cart'], $order_line);
                     }
                 }
             }
 
-            header("Location:?controller=producto&action=cartaJS");
+            header('Location: ' . $_SERVER['HTTP_REFERER'].'&offcanvas=cart');
+
         } else {
 
-            header("Location:?controller=producto&action=sessionStart");
+            header("Location:?controller=users&action=account#pills-login");
         }
     }
 
@@ -59,9 +66,9 @@ class cartController{
 
             $pos = $_POST['pos'];
 
-            unset($_SESSION['carrito'][$pos]);
+            unset($_SESSION['cart'][$pos]);
 
-            $_SESSION['carrito'] = array_values($_SESSION['carrito']);
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
         }
 
         header("Location:?controller=producto&action=compra");
