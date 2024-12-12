@@ -24,33 +24,21 @@ class ArticleDAO {
         $conn->close();
         
         return $articles;
-    }//TODO
-
-    public static function getArticles($order = 'id') {
-        $conn = DBConnection::connection();
-        $stmt = $conn->prepare("SELECT * FROM ARTICLE");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $articles = [];
-        while($rows = $result->fetch_object('Article')) {
-            $articles[] = $rows;
-        }
-        $conn->close();
-        
-        return $articles;
     }
 
-    public static function indexArticlesById() {
+    public static function indexProductsById() {
         
         $conn = DBConnection::connection();
-        $stmt = $conn->prepare("SELECT * FROM ARTICLE");
+        $stmt = $conn->prepare("SELECT * FROM ARTICLE WHERE type = 'product'");
         $stmt->execute();
         $result = $stmt->get_result();
         $articles = [];
-        while($rows = $result->fetch_object('Article')) {
+        while($rows = $result->fetch_object('Product')) {
             $articles[$rows->getId()] = $rows;
         }
         $conn->close();
+
+        return $articles;
     }
     
 
@@ -101,7 +89,7 @@ class ArticleDAO {
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_object('Product')) {
-            $price = $row['price'];
+            $price = $row->getPrice();
         }
         $conn->close();
         

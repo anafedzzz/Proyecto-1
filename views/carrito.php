@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item"><a href="?controller=restaurant">Home</a></li>
   <li class="breadcrumb-item active" aria-current="page">Carrito</li>
   </ol>
 </nav>
@@ -50,26 +50,28 @@
                                                 class="img-fluid rounded-3" alt="<?=$articles[$order_line->getArticleId()]->getName()?>">
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h6 class="text-muted"><?=$articles[$order_line->getArticleId()]->getName()?></h6>
+                                            <h6 class="text-muted"><?=$categories[$articles[$order_line->getArticleId()]->getCategory_id()]->getName()?>-<?=$order_line->getLineNumber()?></h6>
                                             <h6 class="mb-0"><?=$articles[$order_line->getArticleId()]->getName()?></h6>
                                             </div>
                                             
-                                            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                            <form action="?controller=cart&action" method="post" class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                             <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                                                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                                                 <i class="bi bi-dash-lg"></i>
                                             </button>
+                                            <input type="hidden" name="pos" value="<?=$order_line->getLineNumber()?>">
 
-                                            <input id="form1" min="0" name="quantity" value="1" type="number"
+                                            <input id="form1" min="0" name="quantity" value="<?=$order_line->getQuantity()?>" type="number"
                                                 class="form-control form-control-sm" />
 
                                             <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                                                 onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                                 <i class="bi bi-plus-lg"></i>
                                             </button>
-                                            </div>
+                                            </form>
+
                                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h6 class="mb-0">€ 44.00</h6>
+                                            <h6 class="mb-0">€ <?=$order_line->getTotal()?></h6>
                                             </div>
                                             <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                             <a href="#" class="text-muted"><i class="bi bi-x-lg"></i></i></a>
@@ -82,40 +84,6 @@
                                     }
                                 ?>
 
-                                <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                    <img
-                                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                        class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                    <h6 class="text-muted">Shirt</h6>
-                                    <h6 class="mb-0">Cotton T-shirt</h6>
-                                    </div>
-                                    
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                        <i class="bi bi-dash-lg"></i>
-                                    </button>
-
-                                    <input id="form1" min="0" name="quantity" value="1" type="number"
-                                        class="form-control form-control-sm" />
-
-                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                    <h6 class="mb-0">€ 44.00</h6>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                    <a href="#" class="text-muted"><i class="bi bi-x-lg"></i></i></a>
-                                    </div>
-                                </div>
-
-                                <hr class="my-4">
 
                                 <div class="pt-5">
                                     <h6 class="mb-0"><a href="#!" class="text-body">

@@ -13,7 +13,8 @@ class cartController{
         
         session_start();
 
-        $articles = ArticleDAO::indexArticlesById();
+        $articles = ArticleDAO::indexProductsById();
+        $categories = CategoryDAO::getCategories();
 
         $view="views/carrito.php";
 
@@ -43,8 +44,8 @@ class cartController{
                         }
                     }
 
-                    if ($pedidoExistente == false) {
-                        $order_line = new OrderLine($_POST['id'],$quantity,ArticleDAO::getPrice($_POST['id']));
+                    if ($pedidoExistente == false) { //TODO
+                        $order_line = new OrderLine(1,$_POST['id'],$quantity,ArticleDAO::getPrice($_POST['id']));
                         array_push($_SESSION['cart'], $order_line);
                     }
                 }
@@ -74,4 +75,20 @@ class cartController{
         header("Location:?controller=producto&action=compra");
     }
     
+    public function updateCart()
+    {
+        session_start();
+
+        if (isset($_POST['id'])) {
+
+            $pos = $_POST['pos'];
+
+            unset($_SESSION['cart'][$pos]);
+
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
+        }
+
+        header("Location:?controller=producto&action=compra");
+    }
+
 }

@@ -78,7 +78,7 @@
                                     <p class="novedad <?=$novedad;?>">Novedad</p>
                                     <div class="product-card-icons">
                                         <i class="bi bi-heart"></i>
-                                        <form action="?controller=producto&action=addCart" method="post">
+                                        <form action="?controller=cart&action=addCart" method="post">
                                             <input hidden name="id" value="<?= $product->getId() ?>">
                                             <button type="submit" class="add-to-cart"><i class="bi bi-cart"></i></button>
                                         </form>

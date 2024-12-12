@@ -9,14 +9,13 @@ include_once("models/Category.php");
 class restaurantController {
 
     public function index() {
+        session_start();
         $categories = CategoryDAO::getCategories();
         $bestselling = ArticleDAO::getBestSelling(9);
-        session_start();
 
         $view="views/home.php";
 
         include_once("views/main.php");
-        session_abort();
     }
 
     public function categories() {

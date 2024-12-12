@@ -12,7 +12,7 @@ class CategoryDAO {
         $result = $stmt->get_result();
         $categories = [];
         while($rows = $result->fetch_object('Category')) {
-            $categories[] = $rows;
+            $categories[$rows->getId()] = $rows;
         }
         $conn->close();
         
