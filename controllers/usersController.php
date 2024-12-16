@@ -103,13 +103,15 @@ class usersController{
 
         $id = $_SESSION['user']->getId();
 
-        $user = UserDAO::getUserById($id);
-
         // $pedidos = PedidosDAO::getPedidos($id);
 
         // if (isset($_COOKIE['ultimoPedido'])) {
         //     $ultimoPedido = PedidosDAO::getUltimoPedidoCookies($_COOKIE['ultimoPedido']);
         // }
+
+        $view="views/profile.php";
+
+        include_once("views/main.php");
 
     }
 
@@ -124,17 +126,22 @@ class usersController{
         header("Location:?controller=restaurant");
     }
 
-    public function updateUser()
+    public function updateProfile()
     {
 
-        $id         = $_POST['id'];
-        $nombre     = $_POST['nombre'];
-        $apellido   = $_POST['apellido'];
-        $contraseña = $_POST['contraseña'];
-        $email      = $_POST['mail'];
+        session_start();
+
+        $id         = $_SESSION['user']->getId();
+        $nombre     = $_POST['name'];
+        $apellido   = $_POST['surname'];
+        $email      = $_POST['email'];
+        $phone      = $_POST['phone'];
+        $address    = $_POST['address'];
 
 
-        $cliente = UserDAO::updateUser($id, $nombre, $email, $apellido, $contraseña);
+        $success = UserDAO::updateUser($id, $nombre, $apellido, $email, $phone,$address);
+
+        $_SESSION['user']=UserDAO::getUserById($id);
 
 
         header("Location:?controller=users&action=userPage");

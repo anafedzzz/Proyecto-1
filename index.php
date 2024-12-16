@@ -2,7 +2,6 @@
 include_once("controllers/restaurantController.php");
 include_once("controllers/cartController.php");
 include_once("controllers/usersController.php");
-include_once("controllers/articleController.php");
 include_once("config/parameters.php");
 
 if(!isset($_GET['controller'])) {

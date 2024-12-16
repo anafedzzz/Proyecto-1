@@ -9,7 +9,13 @@ class OrderLine {
     private $total; // Precio total de la línea
 
     // Constructor
-    public function __construct() {}
+    public function __construct($articleId, $quantity, $price, $specialOfferId = null) {
+        $this->articleId = $articleId;
+        $this->quantity = $quantity;
+        $this->price = $price;
+        $this->specialOfferId = $specialOfferId;
+        $this->total = $quantity*$price;
+    }
 
     // Getters y Setters
 

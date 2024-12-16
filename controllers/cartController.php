@@ -9,6 +9,10 @@ include_once("models/Category.php");
 
 class cartController{
 
+    public function index() {
+        header("Location:?controller=restaurant&action=index");
+    }
+    
     public function show() {
         
         session_start();
@@ -19,6 +23,15 @@ class cartController{
         $view="views/carrito.php";
 
         include_once("views/main.php");
+    }
+
+    public function cleanCart() {
+        
+        session_start();
+
+        array_pop($_SESSION['cart']);
+
+        var_dump($_SESSION['cart']);
     }
 
     public function addCart(){
@@ -45,7 +58,7 @@ class cartController{
                     }
 
                     if ($pedidoExistente == false) { //TODO
-                        $order_line = new OrderLine(1,$_POST['id'],$quantity,ArticleDAO::getPrice($_POST['id']));
+                        $order_line = new OrderLine($article_id,$quantity,ArticleDAO::getPrice($_POST['id']));
                         array_push($_SESSION['cart'], $order_line);
                     }
                 }

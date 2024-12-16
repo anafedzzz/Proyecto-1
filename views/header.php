@@ -115,6 +115,11 @@
               </nav>
             </div>
 
+            <?php 
+            if ($_SESSION['user']->getRole_id()==1) {
+              ?><a class="btn btn-primary" role="button" href="?controller=restaurant&action=admin">ADMIN</a><?php
+            }?>
+
           </div>
         </div>
     </nav>

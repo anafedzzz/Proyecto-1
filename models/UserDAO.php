@@ -73,14 +73,11 @@ public static function register($name, $surname, $email, $password, $phoneNumber
     }
 
     // Función para actualizar un usuario
-    public static function updateUser($id, $name, $surname, $email, $password, $phoneNumber = null, $address = null, $roleId = null) {
+    public static function updateUser($id, $name, $surname, $email, $phoneNumber = null, $address = null) {
         $conn = DBConnection::connection();
-        $stmt = $conn->prepare("UPDATE USER SET name = ?, surname = ?, email = ?, password = ?, phone_number = ?, address = ?, role_id = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE USER SET name = ?, surname = ?, email = ?, phone_number = ?, address = ? WHERE id = ?");
 
-        // Encripta la contraseña antes de actualizar
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        $stmt->bind_param('ssssssii', $name, $surname, $email, $hashedPassword, $phoneNumber, $address, $roleId, $id);
+        $stmt->bind_param('sssssi', $name, $surname, $email, $phoneNumber, $address, $id);
         $success = $stmt->execute();
         $conn->close();
 

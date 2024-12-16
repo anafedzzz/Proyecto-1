@@ -732,3 +732,131 @@ footer .socials{
 .cart .card, .cart .bg-body-tertiary {
     background-color: transparent;
 }
+
+/* ADMIN */
+
+/* General Styles */
+body.admin-body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .admin-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Titles */
+  .admin-title {
+    font-size: 2rem;
+    color: #333333;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    color: #555555;
+    margin-bottom: 15px;
+  }
+  
+  /* Tabs */
+  .nav-tabs.admin-tabs {
+    border-bottom: 2px solid #cccccc;
+  }
+  
+  .nav-link.admin-tab-link {
+    color: #555555;
+    font-weight: bold;
+  }
+  
+  .nav-link.admin-tab-link.active {
+    color: #ffffff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Buttons */
+  .admin-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .admin-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Tables */
+  .table-container {
+    margin-top: 20px;
+  }
+  
+  .table {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+  }
+  
+  .table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+  }
+  
+  .table th {
+    background-color: #f8f9fa;
+  }
+  
+  /* Modal */
+  .admin-modal {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .admin-modal-header {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 15px;
+  }
+  
+  .admin-modal-body {
+    padding: 20px;
+  }
+  
+  .admin-modal-footer {
+    background-color: #f8f9fa;
+    padding: 15px;
+  }
+  
+  .admin-modal-close-btn {
+    background-color: #6c757d;
+    color: #ffffff;
+  }
+  
+  .admin-modal-save-btn {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+  
+  /* Form Styles */
+  .admin-form .form-label {
+    font-weight: bold;
+    color: #555555;
+  }
+  
+  .admin-form .form-control {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+  }
+  
+  .admin-form .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
