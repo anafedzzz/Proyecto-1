@@ -66,5 +66,6 @@
     </div>
   </div>
 
-  <script src="javascript/scripts.js"></script>
+  <script src="javascript/admin.js"></script>
+
 
