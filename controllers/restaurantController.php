@@ -42,6 +42,16 @@ class restaurantController {
         include_once("views/main.php");
     }
 
+    public function orderDetail() {
+        session_start();
+
+        // todo #3
+        
+        $view="views/orderDetail.php";
+
+        include_once("views/main.php");
+    }
+
     public function admin() {
         session_start();
 

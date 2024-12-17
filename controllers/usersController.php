@@ -2,6 +2,8 @@
 
 include_once("models/UserDAO.php");
 include_once("models/User.php");
+include_once("models/OrderDAO.php");
+include_once("models/Order.php");
 
 
 class usersController{
@@ -91,7 +93,7 @@ class usersController{
         } else {
 
             $_SESSION['error'] = "The email is already registered. Please try another.";
-            header("Location:?controller=users&action=account#pills-register");
+            header("Location:?controller=users&action=account#pills-register");//todo #2
             var_dump($_SESSION);
         }
         //
@@ -103,11 +105,7 @@ class usersController{
 
         $id = $_SESSION['user']->getId();
 
-        // $pedidos = PedidosDAO::getPedidos($id);
-
-        // if (isset($_COOKIE['ultimoPedido'])) {
-        //     $ultimoPedido = PedidosDAO::getUltimoPedidoCookies($_COOKIE['ultimoPedido']);
-        // }
+        $pedidos = OrderDAO::getOrdersById($id);
 
         $view="views/profile.php";
 

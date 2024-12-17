@@ -42,41 +42,32 @@
         <h5>Recent Orders</h5>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Total</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Example rows -->
-            <tr>
-              <td>1</td>
-              <td>ORD1234</td>
-              <td>2024-12-15</td>
-              <td>$49.99</td>
-              <td>Completed</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>ORD1235</td>
-              <td>2024-12-10</td>
-              <td>$24.99</td>
-              <td>Pending</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>ORD1236</td>
-              <td>2024-12-05</td>
-              <td>$99.99</td>
-              <td>Shipped</td>
-            </tr>
-          </tbody>
-        </table>
+        <?php if (is_array($pedidos)): ?>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($pedidos as $pedido): ?>
+                        <tr>
+                            <td><?php echo $pedido->getId(); ?></td>
+                            <td><?php echo $pedido->getDate(); ?></td>
+                            <td><?php echo $pedido->getStatus(); ?></td>
+                            <td><?php echo $pedido->getTotal(); ?></td>
+                            <td><a class="btn btn-primary" role="button" href="#">More Detail</a></td> 
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p><?php echo "no se encontraron resultados"; ?></p>
+        <?php endif; ?>
       </div>
     </div>
   </div>
