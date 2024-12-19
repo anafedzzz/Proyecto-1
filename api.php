@@ -2,13 +2,18 @@
 
 include_once("config/db.php");
 
+include_once("models/CategoryDAO.php");
+include_once("models/ArticleDAO.php");
+include_once("models/UserDAO.php");
+include_once("models/Complement.php");
+include_once("models/Product.php");
+include_once("models/Category.php");
+include_once("models/User.php");
+
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-$mysqli = DBConnection::connection();
-
 
 $resource = isset($_GET['resource']) ? $_GET['resource'] : null;
 $method = $_SERVER['REQUEST_METHOD'];
@@ -22,13 +27,13 @@ if (!$resource) {
 
 switch ($resource) {
     case "users":
-        handleUsers($mysqli, $method);
+        handleUsers($method);
         break;
     case "orders":
-        handleOrders($mysqli, $method);
+        handleOrders($method);
         break;
     case "articles":
-        handleArticles($mysqli, $method);
+        handleArticles($method);
         break;
     default:
         http_response_code(404);
@@ -36,19 +41,19 @@ switch ($resource) {
         break;
 }
 
-function handleUsers($mysqli, $method) {
+function handleUsers($method) {
     switch ($method) {
         case "GET":
-            getUsers($mysqli);
+            getUsers();
             break;
         case "POST":
-            createUser($mysqli);
+            createUser();
             break;
         case "PUT":
-            updateUser($mysqli);
+            updateUser();
             break;
         case "DELETE":
-            deleteUser($mysqli);
+            deleteUser();
             break;
         default:
             http_response_code(405);
@@ -57,18 +62,13 @@ function handleUsers($mysqli, $method) {
     }
 }
 
-function getUsers($mysqli) {
-    $result = $mysqli->query("SELECT * FROM restaurant.USER;");
-    $users = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row;
-    }
+function getUsers() {
+    $users = UserDAO::getUsers();
 
     echo json_encode($users);
 }
 
-function createUser($mysqli) {
+function createUser() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['name'], $data['surname'], $data['email'], $data['password'])) {
         http_response_code(400);
@@ -76,15 +76,14 @@ function createUser($mysqli) {
         return;
     }
 
-    $name = $mysqli->real_escape_string($data['name']);
-    $surname = $mysqli->real_escape_string($data['surname']);
-    $email = $mysqli->real_escape_string($data['email']);
+    $name = $data['name'];
+    $surname = $data['surname'];
+    $email = $data['email'];
     $password = password_hash($data['password'], PASSWORD_BCRYPT);
 
-    $stmt = $mysqli->prepare("INSERT INTO restaurant.USER (name, surname, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("ssss", $name, $surname, $email, $password);
+    $result = UserDAO::register($name,$surname,$email,$password);
 
-    if ($stmt->execute()) {
+    if ($result!=null) {
         http_response_code(201);
         echo json_encode(["success" => "User created"]);
     } else {
@@ -93,22 +92,25 @@ function createUser($mysqli) {
     }
 }
 
-function updateUser($mysqli) {
+function updateUser() {
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data['id'], $data['name'], $data['email'])) {
+    $data = $data['data'];
+
+    if (!isset($data['id'],$data['name'], $data['surname'], $data['email'], $data['password'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
     }
 
-    $name = $mysqli->real_escape_string($data['name']);
-    $email = $mysqli->real_escape_string($data['email']);
     $id = $data['id'];
+    $name = $data['name'];
+    $surname = $data['surname'];
+    $email = $data['email'];
+    $password = password_hash($data['password'], PASSWORD_BCRYPT);
 
-    $stmt = $mysqli->prepare("UPDATE restaurant.USER SET name = ?, email = ? WHERE id = ?");
-    $stmt->bind_param("ssi", $name, $email, $id);
+    $result = UserDAO::updateUser($id, $name, $surname, $email);
 
-    if ($stmt->execute()) {
+    if ($result) {
         echo json_encode(["success" => "User updated"]);
     } else {
         http_response_code(500);
@@ -116,7 +118,7 @@ function updateUser($mysqli) {
     }
 }
 
-function deleteUser($mysqli) {
+function deleteUser() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['id'])) {
         http_response_code(400);
@@ -125,30 +127,30 @@ function deleteUser($mysqli) {
     }
 
     $id = $data['id'];
-    $stmt = $mysqli->prepare("DELETE FROM restaurant.USER WHERE id = ?");
-    $stmt->bind_param("i", $id);
 
-    if ($stmt->execute()) {
+    $result = UserDAO::destroy($id);
+
+    if ($result) {
         echo json_encode(["success" => "User deleted"]);
     } else {
         http_response_code(500);
-        echo json_encode(["error" => "Failed to delete user"]);
+        echo json_encode(["error" => "Failed to delete User"]);
     }
 }
 
-function handleOrders($mysqli, $method) {
+function handleOrders($method) {
     switch ($method) {
         case "GET":
-            getOrders($mysqli);
+            getOrders();
             break;
         case "POST":
-            createOrder($mysqli);
+            createOrder();
             break;
         case "PUT":
-            updateOrder($mysqli);
+            updateOrder();
             break;
         case "DELETE":
-            deleteOrder($mysqli);
+            deleteOrder();
             break;
         default:
             http_response_code(405);
@@ -157,18 +159,13 @@ function handleOrders($mysqli, $method) {
     }
 }
 
-function getOrders($mysqli) {
-    $result = $mysqli->query("SELECT * FROM restaurant.ORDER;");
-    $orders = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $orders[] = $row;
-    }
+function getOrders() {
+    $orders = OrderDAO::getOrders();
 
     echo json_encode($orders);
 }
 
-function createOrder($mysqli) {
+function createOrder() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['user_id'], $data['total_amount'])) {
         http_response_code(400);
@@ -176,10 +173,10 @@ function createOrder($mysqli) {
         return;
     }
 
-    $user_id = $mysqli->real_escape_string($data['user_id']);
-    $total_amount = $mysqli->real_escape_string($data['total_amount']);
+    $user_id = ->real_escape_string($data['user_id']);
+    $total_amount = ->real_escape_string($data['total_amount']);
 
-    $stmt = $mysqli->prepare("INSERT INTO restaurant.ORDER (user_id, total_amount) VALUES (?, ?)");
+    $stmt = ->prepare("INSERT INTO restaurant.ORDER (user_id, total_amount) VALUES (?, ?)");
     $stmt->bind_param("id", $user_id, $total_amount);
 
     if ($stmt->execute()) {
@@ -191,8 +188,10 @@ function createOrder($mysqli) {
     }
 }
 
-function updateOrder($mysqli) {
+function updateOrder() {
     $data = json_decode(file_get_contents("php://input"), true);
+    $data = $data['data'];
+
     if (!isset($data['id'], $data['total_amount'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
@@ -200,9 +199,9 @@ function updateOrder($mysqli) {
     }
 
     $id = $data['id'];
-    $total_amount = $mysqli->real_escape_string($data['total_amount']);
+    $total_amount = ->real_escape_string($data['total_amount']);
 
-    $stmt = $mysqli->prepare("UPDATE restaurant.ORDER SET total_amount = ? WHERE id = ?");
+    $stmt = ->prepare("UPDATE restaurant.ORDER SET total_amount = ? WHERE id = ?");
     $stmt->bind_param("di", $total_amount, $id);
 
     if ($stmt->execute()) {
@@ -213,7 +212,7 @@ function updateOrder($mysqli) {
     }
 }
 
-function deleteOrder($mysqli) {
+function deleteOrder() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['id'])) {
         http_response_code(400);
@@ -223,10 +222,9 @@ function deleteOrder($mysqli) {
 
     $id = $data['id'];
 
-    $stmt = $mysqli->prepare("DELETE FROM restaurant.ORDER WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    $result = OrderDAO::destroy($id);
 
-    if ($stmt->execute()) {
+    if ($result) {
         echo json_encode(["success" => "Order deleted"]);
     } else {
         http_response_code(500);
@@ -234,19 +232,19 @@ function deleteOrder($mysqli) {
     }
 }
 
-function handleArticles($mysqli, $method) {
+function handleArticles($method) {
     switch ($method) {
         case "GET":
-            getArticles($mysqli);
+            getArticles();
             break;
         case "POST":
-            createArticle($mysqli);
+            createArticle();
             break;
         case "PUT":
-            updateArticle($mysqli);
+            updateArticle();
             break;
         case "DELETE":
-            deleteArticle($mysqli);
+            deleteArticle();
             break;
         default:
             http_response_code(405);
@@ -256,19 +254,14 @@ function handleArticles($mysqli, $method) {
 }
 
 // Obtener todos los artículos
-function getArticles($mysqli) {
-    $result = $mysqli->query("SELECT * FROM restaurant.ARTICLE;");
-    $articles = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $articles[] = $row;
-    }
+function getArticles() {
+    $articles = ArticleDAO::getArticles();
 
     echo json_encode($articles);
 }
 
 // Crear un artículo
-function createArticle($mysqli) {
+function createArticle() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['name'], $data['description'], $data['price'], $data['category_id'], $data['type'], $data['IMG'], $data['novedad'])) {
         http_response_code(400);
@@ -276,18 +269,18 @@ function createArticle($mysqli) {
         return;
     }
 
-    $name = $mysqli->real_escape_string($data['name']);
-    $description = $mysqli->real_escape_string($data['description']);
-    $price = $mysqli->real_escape_string($data['price']);
-    $category_id = $mysqli->real_escape_string($data['category_id']);
-    $type = $mysqli->real_escape_string($data['type']);
-    $IMG = $mysqli->real_escape_string($data['IMG']);
-    $novedad = $mysqli->real_escape_string($data['novedad']);
+    $name = $data['name'];
+    $description = $data['description'];
+    $price = $data['price'];
+    $category_id = $data['category_id'];
+    $type = $data['type'];
+    $IMG = $data['IMG'];
+    $novedad = $data['novedad'];
 
-    $stmt = $mysqli->prepare("INSERT INTO restaurant.ARTICLE (category_id, name, description, price, type, IMG, novedad) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("issdssi", $category_id, $name, $description, $price, $type, $IMG, $novedad);
+    $article = new Article($category_id,$name,$description,$price,$type,$IMG,$novedad);
+    $result = ArticleDAO::store($article);
 
-    if ($stmt->execute()) {
+    if ($result) {
         http_response_code(201);
         echo json_encode(["success" => "Article created"]);
     } else {
@@ -297,27 +290,29 @@ function createArticle($mysqli) {
 }
 
 // Actualizar un artículo
-function updateArticle($mysqli) {
+function updateArticle() {
+
     $data = json_decode(file_get_contents("php://input"), true);
+    $data = $data['data'];
+
     if (!isset($data['id'], $data['name'], $data['description'], $data['price'], $data['category_id'], $data['type'], $data['IMG'], $data['novedad'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
     }
 
-    $id = $mysqli->real_escape_string($data['id']);
-    $name = $mysqli->real_escape_string($data['name']);
-    $description = $mysqli->real_escape_string($data['description']);
-    $price = $mysqli->real_escape_string($data['price']);
-    $category_id = $mysqli->real_escape_string($data['category_id']);
-    $type = $mysqli->real_escape_string($data['type']);
-    $IMG = $mysqli->real_escape_string($data['IMG']);
-    $novedad = $mysqli->real_escape_string($data['novedad']);
+    $id = $data['id'];
+    $name = $data['name'];
+    $description = $data['description'];
+    $price = $data['price'];
+    $category_id = $data['category_id'];
+    $type = $data['type'];
+    $IMG = $data['IMG'];
+    $novedad = $data['novedad'];
 
-    $stmt = $mysqli->prepare("UPDATE restaurant.ARTICLE SET category_id = ?, name = ?, description = ?, price = ?, type = ?, IMG = ?, novedad = ? WHERE id = ?");
-    $stmt->bind_param("issdssii", $category_id, $name, $description, $price, $type, $IMG, $novedad, $id);
+    $result = ArticleDAO::update($id,$category_id,$name,$description,$price,$type,$IMG,$novedad);
 
-    if ($stmt->execute()) {
+    if ($result) {
         echo json_encode(["success" => "Article updated"]);
     } else {
         http_response_code(500);
@@ -326,7 +321,7 @@ function updateArticle($mysqli) {
 }
 
 // Eliminar un artículo
-function deleteArticle($mysqli) {
+function deleteArticle() {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($data['id'])) {
         http_response_code(400);
@@ -334,12 +329,11 @@ function deleteArticle($mysqli) {
         return;
     }
 
-    $id = $mysqli->real_escape_string($data['id']);
+    $id = $data['id'];
 
-    $stmt = $mysqli->prepare("DELETE FROM restaurant.ARTICLE WHERE id = ?");
-    $stmt->bind_param("i", $id);
+    $result = ArticleDAO::destroy($id);
 
-    if ($stmt->execute()) {
+    if ($result) {
         echo json_encode(["success" => "Article deleted"]);
     } else {
         http_response_code(500);

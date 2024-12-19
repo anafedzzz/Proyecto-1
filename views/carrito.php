@@ -40,6 +40,7 @@
                                 <hr class="my-4">
 
                                 <?php
+                                if (isset($_SESSION['cart'])) {
                                     foreach ($_SESSION['cart'] as $order_line) {
                                         ?>
 
@@ -82,7 +83,11 @@
 
                                         <?php
                                     }
-                                ?>
+                                }else {
+                                    ?>
+                                    <p>No tienes nada en el carrito..</p>
+                                    <?php
+                                }?>
 
 
                                 <div class="pt-5">

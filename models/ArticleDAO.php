@@ -109,16 +109,46 @@ class ArticleDAO {
 
         //TODO
 
-        $stmt->execute();
+        $result = $stmt->execute();
         $conn->close();
+
+        return $result;
+    }
+
+    public static function update($id,$category_id,$name,$description,$price,$type,$IMG,$novedad) {
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("UPDATE restaurant.ARTICLE SET category_id = ?, name = ?, description = ?, price = ?, type = ?, IMG = ?, novedad = ? WHERE id = ?");
+        $stmt->bind_param("issdssii", $category_id, $name, $description, $price, $type, $IMG, $novedad, $id);
+
+        $result = $stmt->execute();
+        $conn->close();
+
+        return $result;
     }
 
     public static function destroy($id){
         $conn = DBConnection::connection();
         $stmt = $conn->prepare("DELETE FROM article WHERE ID=?;");
         $stmt->bind_param("i",$id);
-        $stmt->execute();
+
+        $result = $stmt->execute();
         $conn->close();
+
+        return $result;
+    }
+
+    public static function getArticles() {
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("SELECT * FROM restaurant.ARTICLE;");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $articles = [];
+        while ($row = $result->fetch_assoc()) {
+            $articles[] = $row;
+        }
+        $conn->close();
+        
+        return $articles;
     }
 
 }

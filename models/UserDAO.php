@@ -83,6 +83,31 @@ public static function register($name, $surname, $email, $password, $phoneNumber
 
         return $success; // Retorna true si la actualización se ha realizado correctamente
     }
+
+    public static function getUsers() {
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("SELECT * FROM restaurant.USER;");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+        $conn->close();
+        
+        return $users;
+    }
+
+    public static function destroy($id){
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("DELETE FROM restaurant.USER WHERE id = ?");
+        $stmt->bind_param("i", $id);
+
+        $result = $stmt->execute();
+        $conn->close();
+
+        return $result;
+    }
 }
 
 ?>

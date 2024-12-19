@@ -60,7 +60,7 @@
         </div>
         <div class="modal-footer admin-modal-footer">
           <button type="button" class="btn btn-secondary admin-modal-close-btn" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary admin-modal-save-btn" onclick="submitCrudForm()">Save Changes</button>
+          <button type="button" id="saveButton" class="btn btn-primary admin-modal-save-btn" onclick="updateItem()">Save Changes</button>
         </div>
       </div>
     </div>
