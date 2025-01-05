@@ -96,15 +96,17 @@ class ArticleDAO {
         return $price;
     }
 
-    public static function store($article) {
+    public static function store($category_id,$name,$description,$price,$type,$IMG,$novedad) {
         $conn = DBConnection::connection();
-        $stmt = $conn->prepare("INSERT INTO article (category_id,name,description,price,type) VALUES (?,?,?,?,?);");
-        $stmt->bind_param("issds",
-                $article->getCategory_id(),
-                $article->getName(),
-                $article->getDescription(),
-                $article->getPrice(),
-                $article->getType()
+        $stmt = $conn->prepare("INSERT INTO ARTICLE (category_id,name,description,price,type,IMG,novedad) VALUES (?,?,?,?,?,?,?);");
+        $stmt->bind_param("issdssi",
+                $category_id,
+                $name,
+                $description,
+                $price,
+                $type,
+                $IMG,
+                $novedad
         );
 
         //TODO
@@ -128,7 +130,7 @@ class ArticleDAO {
 
     public static function destroy($id){
         $conn = DBConnection::connection();
-        $stmt = $conn->prepare("DELETE FROM article WHERE ID=?;");
+        $stmt = $conn->prepare("DELETE FROM restaurant.ARTICLE WHERE ID=?;");
         $stmt->bind_param("i",$id);
 
         $result = $stmt->execute();

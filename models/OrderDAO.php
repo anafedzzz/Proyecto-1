@@ -5,9 +5,37 @@ include_once("models/Order.php");
 
 class OrderDAO {
 
-    public static function update(){} //todo #6
+    public static function update($id, $user_id, $date, $status, $promo_code_id) {
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("UPDATE restaurant.ORDER SET user_id=?,date=?,status=?".($promo_code_id == "" ? "" : ", promo_code_id=?")." WHERE id = ?");
+        
+        if ($promo_code_id == "") {
+            $stmt->bind_param("issi", $user_id, $date, $status, $id);
+        }else{
+            $stmt->bind_param("issii", $user_id, $date, $status, $promo_code_id, $id);
+        }
 
-    public static function create(){} //todo #7
+        $result = $stmt->execute();
+        $conn->close();
+
+        return $result;
+    }
+
+    public static function create($user_id, $date, $status, $promo_code_id){
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("INSERT INTO restaurant.ORDER (user_id, date, status".($promo_code_id == "" ? "" : ", promo_code_id").") VALUES (?,?,?".($promo_code_id == "" ? "" : ",?").")");
+        
+        if ($promo_code_id != "") {
+            $stmt->bind_param("issi", $user_id, $date, $status, $promo_code_id);
+        }else{
+            $stmt->bind_param("iss", $user_id, $date, $status);
+        }
+
+        $result = $stmt->execute();
+        $conn->close();
+
+        return $result;
+    } //todo #7
 
 
     public static function getOrders() {

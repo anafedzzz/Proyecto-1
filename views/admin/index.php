@@ -40,6 +40,15 @@
         <div class="mb-3">
           <button class="btn btn-primary admin-btn" onclick="showCreateForm('articles')">Add Article</button>
         </div>
+        <!-- Selector de moneda -->
+        <div>
+          <label for="currencySelector">Seleccionar moneda:</label>
+          <select id="currencySelector" onchange="updatePrices()">
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="CAD">CAD</option>
+          </select>
+        </div>
         <div id="articlesTableContainer" class="table-container"></div>
       </div>
     </div>
@@ -54,7 +63,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body admin-modal-body">
-          <form id="crudForm" class="admin-form">
+          <form id="crudForm" enctype="multipart/form-data" method="POST" class="admin-form">
             <!-- Form fields dynamically added by JS -->
           </form>
         </div>
@@ -66,6 +75,7 @@
     </div>
   </div>
 
-  <script src="javascript/admin.js"></script>
+  <script src="javascript/admin.js" defer></script>
+  <script src="javascript/currencyAPI.js" defer></script>
 
 

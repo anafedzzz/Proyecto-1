@@ -5,10 +5,12 @@ include_once("config/db.php");
 include_once("models/CategoryDAO.php");
 include_once("models/ArticleDAO.php");
 include_once("models/UserDAO.php");
+include_once("models/OrderDAO.php");
 include_once("models/Complement.php");
 include_once("models/Product.php");
 include_once("models/Category.php");
 include_once("models/User.php");
+include_once("models/Order.php");
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
@@ -69,7 +71,7 @@ function getUsers() {
 }
 
 function createUser() {
-    $data = json_decode(file_get_contents("php://input"), true);
+    $data = $_POST;
     if (!isset($data['name'], $data['surname'], $data['email'], $data['password'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
@@ -79,7 +81,7 @@ function createUser() {
     $name = $data['name'];
     $surname = $data['surname'];
     $email = $data['email'];
-    $password = password_hash($data['password'], PASSWORD_BCRYPT);
+    $password = $data['password'];
 
     $result = UserDAO::register($name,$surname,$email,$password);
 
@@ -94,9 +96,8 @@ function createUser() {
 
 function updateUser() {
     $data = json_decode(file_get_contents("php://input"), true);
-    $data = $data['data'];
 
-    if (!isset($data['id'],$data['name'], $data['surname'], $data['email'], $data['password'])) {
+    if (!isset($data['id'],$data['name'], $data['surname'], $data['email'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
@@ -106,7 +107,6 @@ function updateUser() {
     $name = $data['name'];
     $surname = $data['surname'];
     $email = $data['email'];
-    $password = password_hash($data['password'], PASSWORD_BCRYPT);
 
     $result = UserDAO::updateUser($id, $name, $surname, $email);
 
@@ -166,20 +166,22 @@ function getOrders() {
 }
 
 function createOrder() {
-    $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data['user_id'], $data['total_amount'])) {
+    $data = $_POST;
+
+    if (!isset($data['user_id'], $data['date'], $data['status'], $data['promo_code_id'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
     }
 
-    $user_id = ->real_escape_string($data['user_id']);
-    $total_amount = ->real_escape_string($data['total_amount']);
+    $user_id = $data['user_id'];
+    $date = $data['date'];
+    $status = $data['status'];
+    $promo_code_id = $data['promo_code_id'];
 
-    $stmt = ->prepare("INSERT INTO restaurant.ORDER (user_id, total_amount) VALUES (?, ?)");
-    $stmt->bind_param("id", $user_id, $total_amount);
+    $result = OrderDAO::create($user_id, $date, $status, $promo_code_id);
 
-    if ($stmt->execute()) {
+    if ($result) {
         http_response_code(201);
         echo json_encode(["success" => "Order created"]);
     } else {
@@ -190,21 +192,23 @@ function createOrder() {
 
 function updateOrder() {
     $data = json_decode(file_get_contents("php://input"), true);
-    $data = $data['data'];
 
-    if (!isset($data['id'], $data['total_amount'])) {
+    if (!isset($data['id'], $data['user_id'], $data['date'], $data['status'], $data['promo_code_id'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
     }
 
     $id = $data['id'];
-    $total_amount = ->real_escape_string($data['total_amount']);
+    $user_id = $data['user_id'];
+    $date = $data['date'];
+    $status = $data['status'];
+    $promo_code_id = $data['promo_code_id'];
 
-    $stmt = ->prepare("UPDATE restaurant.ORDER SET total_amount = ? WHERE id = ?");
-    $stmt->bind_param("di", $total_amount, $id);
+    $result = OrderDAO::update($id, $user_id, $date, $status, $promo_code_id);
 
-    if ($stmt->execute()) {
+    if ($result) {
+
         echo json_encode(["success" => "Order updated"]);
     } else {
         http_response_code(500);
@@ -262,7 +266,20 @@ function getArticles() {
 
 // Crear un artículo
 function createArticle() {
-    $data = json_decode(file_get_contents("php://input"), true);
+    
+    $data = $_POST;
+    
+    if (isset($_FILES['IMG'])) {
+        $uploadDir = 'img/';
+        $uploadFile = $uploadDir . basename($_FILES['IMG']['name']);
+        if (!move_uploaded_file($_FILES['IMG']['tmp_name'], $uploadFile)) {
+            http_response_code(500);
+            echo json_encode(["error" => "Failed to save image"]);
+        }else{
+            $data['IMG'] = basename($_FILES['IMG']['name']);
+        }
+    }
+
     if (!isset($data['name'], $data['description'], $data['price'], $data['category_id'], $data['type'], $data['IMG'], $data['novedad'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
@@ -277,8 +294,7 @@ function createArticle() {
     $IMG = $data['IMG'];
     $novedad = $data['novedad'];
 
-    $article = new Article($category_id,$name,$description,$price,$type,$IMG,$novedad);
-    $result = ArticleDAO::store($article);
+    $result = ArticleDAO::store($category_id,$name,$description,$price,$type,$IMG,$novedad);
 
     if ($result) {
         http_response_code(201);
@@ -293,7 +309,6 @@ function createArticle() {
 function updateArticle() {
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $data = $data['data'];
 
     if (!isset($data['id'], $data['name'], $data['description'], $data['price'], $data['category_id'], $data['type'], $data['IMG'], $data['novedad'])) {
         http_response_code(400);
