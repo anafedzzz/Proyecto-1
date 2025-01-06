@@ -17,10 +17,9 @@ public static function register($name, $surname, $email, $password, $phoneNumber
 
     if ($stmt->execute()) {
         $userId = $conn->insert_id; //ID del usuario recién creado
-        $user = new User($userId, $name, $surname, $email, $hashedPassword, $phoneNumber, $address, $roleId);
         
         $conn->close();
-        return $user; 
+        return $userId; 
     }
 
     $conn->close();
@@ -69,15 +68,15 @@ public static function register($name, $surname, $email, $password, $phoneNumber
 
         $user = $result->fetch_object('User');
         $conn->close();
-        return $user ? $user : null; // Retorna el usuario si existe, sino null
+        return $user; // Retorna el usuario si existe, sino null
     }
 
     // Función para actualizar un usuario
-    public static function updateUser($id, $name, $surname, $email, $phoneNumber = null, $address = null) {
+    public static function updateUser($id, $name, $surname, $email, $roleId, $phoneNumber = null, $address = null) {
         $conn = DBConnection::connection();
-        $stmt = $conn->prepare("UPDATE USER SET name = ?, surname = ?, email = ?, phone_number = ?, address = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE USER SET name = ?, surname = ?, email = ?, role_id = ?, phone_number = ?, address = ? WHERE id = ?");
 
-        $stmt->bind_param('sssssi', $name, $surname, $email, $phoneNumber, $address, $id);
+        $stmt->bind_param('sssissi', $name, $surname, $email, $roleId, $phoneNumber, $address, $id);
         $success = $stmt->execute();
         $conn->close();
 

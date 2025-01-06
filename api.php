@@ -11,6 +11,7 @@ include_once("models/Product.php");
 include_once("models/Category.php");
 include_once("models/User.php");
 include_once("models/Order.php");
+include_once("models/ActionsLogDAO.php");
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
@@ -36,6 +37,9 @@ switch ($resource) {
         break;
     case "articles":
         handleArticles($method);
+        break;
+    case "actions":
+        getActions();
         break;
     default:
         http_response_code(404);
@@ -83,9 +87,10 @@ function createUser() {
     $email = $data['email'];
     $password = $data['password'];
 
-    $result = UserDAO::register($name,$surname,$email,$password);
+    $itemId = UserDAO::register($name,$surname,$email,$password);
 
-    if ($result!=null) {
+    if ($itemId!=null) {
+        ActionsLogDAO::insert('CREATE', 'USER', $itemId);
         http_response_code(201);
         echo json_encode(["success" => "User created"]);
     } else {
@@ -97,7 +102,7 @@ function createUser() {
 function updateUser() {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['id'],$data['name'], $data['surname'], $data['email'])) {
+    if (!isset($data['id'],$data['name'], $data['surname'], $data['email'], $data['role_id'], $data['phone_number'], $data['address'])) {
         http_response_code(400);
         echo json_encode(["error" => "Invalid input"]);
         return;
@@ -107,10 +112,14 @@ function updateUser() {
     $name = $data['name'];
     $surname = $data['surname'];
     $email = $data['email'];
+    $role_id = $data['role_id'];
+    $phone_number = $data['phone_number'];
+    $address = $data['address'];
 
-    $result = UserDAO::updateUser($id, $name, $surname, $email);
+    $result = UserDAO::updateUser($id, $name, $surname, $email, $role_id, $phone_number, $address);
 
     if ($result) {
+        ActionsLogDAO::insert('UPDATE', 'USER', $id);
         echo json_encode(["success" => "User updated"]);
     } else {
         http_response_code(500);
@@ -131,6 +140,7 @@ function deleteUser() {
     $result = UserDAO::destroy($id);
 
     if ($result) {
+        ActionsLogDAO::insert('DELETE', 'USER', $id);
         echo json_encode(["success" => "User deleted"]);
     } else {
         http_response_code(500);
@@ -179,9 +189,10 @@ function createOrder() {
     $status = $data['status'];
     $promo_code_id = $data['promo_code_id'];
 
-    $result = OrderDAO::create($user_id, $date, $status, $promo_code_id);
+    $itemId = OrderDAO::create($user_id, $date, $status, $promo_code_id);
 
-    if ($result) {
+    if ($itemId!=0) {
+        ActionsLogDAO::insert('CREATE', 'ORDER', $itemId);
         http_response_code(201);
         echo json_encode(["success" => "Order created"]);
     } else {
@@ -208,7 +219,7 @@ function updateOrder() {
     $result = OrderDAO::update($id, $user_id, $date, $status, $promo_code_id);
 
     if ($result) {
-
+        ActionsLogDAO::insert('UPDATE', 'ORDER', $id);
         echo json_encode(["success" => "Order updated"]);
     } else {
         http_response_code(500);
@@ -229,6 +240,7 @@ function deleteOrder() {
     $result = OrderDAO::destroy($id);
 
     if ($result) {
+        ActionsLogDAO::insert('DELETE', 'ORDER', $id);
         echo json_encode(["success" => "Order deleted"]);
     } else {
         http_response_code(500);
@@ -296,7 +308,8 @@ function createArticle() {
 
     $result = ArticleDAO::store($category_id,$name,$description,$price,$type,$IMG,$novedad);
 
-    if ($result) {
+    if ($result!=0) {
+        ActionsLogDAO::insert('CREATE', 'ARTICLE', $result);
         http_response_code(201);
         echo json_encode(["success" => "Article created"]);
     } else {
@@ -327,7 +340,8 @@ function updateArticle() {
 
     $result = ArticleDAO::update($id,$category_id,$name,$description,$price,$type,$IMG,$novedad);
 
-    if ($result) {
+    if ($result!=0) {
+        ActionsLogDAO::insert('UPDATE', 'ARTICLE', $result);
         echo json_encode(["success" => "Article updated"]);
     } else {
         http_response_code(500);
@@ -349,9 +363,16 @@ function deleteArticle() {
     $result = ArticleDAO::destroy($id);
 
     if ($result) {
+        ActionsLogDAO::insert('DELETE', 'ARTICLE', $id);
         echo json_encode(["success" => "Article deleted"]);
     } else {
         http_response_code(500);
         echo json_encode(["error" => "Failed to delete article"]);
     }
+}
+
+function getActions() {
+    $actions = ActionsLogDAO::getAll();
+
+    echo json_encode($actions);
 }

@@ -1,38 +1,40 @@
 <?php
 
 class OrderLine {
-    private $lineNumber; // Se genera dinámicamente con el índice del carrito
-    private $articleId; // ID del artículo en el pedido
+    private $line_number; // Se genera dinámicamente con el índice del carrito
+    private $article_id; // ID del artículo en el pedido
     private $quantity; // Cantidad del artículo
     private $price; // Precio del artículo
-    private $specialOfferId; // ID de oferta especial, si aplica
+    private $special_offer_id; // ID de oferta especial, si aplica
     private $total; // Precio total de la línea
 
     // Constructor
-    public function __construct($articleId, $quantity, $price, $specialOfferId = null) {
-        $this->articleId = $articleId;
-        $this->quantity = $quantity;
-        $this->price = $price;
-        $this->specialOfferId = $specialOfferId;
-        $this->total = $quantity*$price;
+    public function __construct($article_id = null, $quantity = null, $price = null, $special_offer_id = null) {
+        if ($article_id !== null && $quantity !== null && $price !== null) {
+            $this->article_id = $article_id;
+            $this->quantity = $quantity;
+            $this->price = $price;
+            $this->special_offer_id = $special_offer_id;
+            $this->total = $quantity * $price;
+        }
     }
 
     // Getters y Setters
 
     public function getLineNumber() {
-        return $this->lineNumber;
+        return $this->line_number;
     }
 
-    public function setLineNumber($lineNumber) {
-        $this->lineNumber = $lineNumber;
+    public function setLineNumber($line_number) {
+        $this->line_number = $line_number;
     }
 
     public function getArticleId() {
-        return $this->articleId;
+        return $this->article_id;
     }
 
-    public function setArticleId($articleId) {
-        $this->articleId = $articleId;
+    public function setArticleId($article_id) {
+        $this->article_id = $article_id;
     }
 
     public function getQuantity() {
@@ -45,11 +47,11 @@ class OrderLine {
     }
 
     public function getSpecialOfferId() {
-        return $this->specialOfferId;
+        return $this->special_offer_id;
     }
 
-    public function setSpecialOfferId($specialOfferId) {
-        $this->specialOfferId = $specialOfferId;
+    public function setSpecialOfferId($special_offer_id) {
+        $this->special_offer_id = $special_offer_id;
     }
 
     public function getTotal() {

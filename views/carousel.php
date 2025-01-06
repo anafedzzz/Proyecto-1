@@ -17,11 +17,7 @@
         
         <button class="carousel-button next-button">></button>    
     </div>
-    <p>PRODUCTO</p>
-    <div>
-        <a href="">Añadir al carrito</a>
-        <a href="">Más detalles</a>
-    </div>
+    <a href="?controller=restaurant&action=categories">Ver más</a>
 </section>
 
 <style>
@@ -46,6 +42,9 @@
         margin: 50px;
         width: 100px;
         z-index: 10000;
+        background-color: transparent;
+        border: none;
+        font-size: xx-large;
     }
 
     .scene {

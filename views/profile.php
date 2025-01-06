@@ -60,7 +60,7 @@
                             <td><?php echo $pedido->getDate(); ?></td>
                             <td><?php echo $pedido->getStatus(); ?></td>
                             <td><?php echo $pedido->getTotal(); ?></td>
-                            <td><a class="btn btn-primary" role="button" href="#">More Detail</a></td> 
+                            <td><a class="btn btn-primary" role="button" href="?controller=cart&action=confirmation&id=<?=$pedido->getId();?>">More Detail</a></td> 
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

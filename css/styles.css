@@ -257,6 +257,22 @@
     background-position: center;
 }
 
+.event-card:nth-child(2){
+    background-image: url("../img/event1.webp");
+}
+
+.event-card:nth-child(3){
+    background-image: url("../img/event2.webp");
+}
+
+.event-card:nth-child(4){
+    background-image: url("../img/event3.webp");
+}
+
+.event-card:nth-child(5){
+    background-image: url("../img/event4.webp");
+}
+
 .event-card a{
     height: 100%;
 
@@ -501,10 +517,12 @@ footer .socials{
 
 #home-banner video {
     position: absolute;
+    background-size: cover;
     top: 0;
     left: 0;
     min-height: inherit;
     min-width: inherit;
+    height: 150vh;
     z-index:-100;
 }
   
@@ -773,13 +791,13 @@ body.admin-body {
 
 .nav-link.admin-tab-link.active {
     color: #ffffff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: var(--DarkPeacock);
+    border-color: var(--DarkPeacock);
 }
 
 /* Buttons */
 .admin-btn {
-    background-color: #007bff;
+    background-color: var(--DarkPeacock);
     color: #ffffff;
     border-radius: 5px;
     padding: 10px 15px;
@@ -819,7 +837,7 @@ body.admin-body {
 }
 
 .admin-modal-header {
-    background-color: #007bff;
+    background-color: var(--DarkPeacock);
     color: #ffffff;
     padding: 15px;
 }
@@ -839,7 +857,7 @@ body.admin-body {
 }
 
 .admin-modal-save-btn {
-    background-color: #007bff;
+    background-color: var(--DarkPeacock);
     color: #ffffff;
 }
 
@@ -855,7 +873,12 @@ body.admin-body {
 }
 
 .admin-form .form-control:focus {
-    border-color: #007bff;
+    border-color: var(--DarkPeacock);
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.bg-primary, .bg-info, .btn-primary{
+    background-color: var(--DarkPeacock) !important;
+    border-color: var(--DarkPeacock) !important;
 }
   

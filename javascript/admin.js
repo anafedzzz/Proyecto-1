@@ -1,7 +1,8 @@
 const data = {
     users: JSON.parse(sessionStorage.getItem('users')) || [],
     orders: JSON.parse(sessionStorage.getItem('orders')) || [],
-    articles: JSON.parse(sessionStorage.getItem('articles')) || []
+    articles: JSON.parse(sessionStorage.getItem('articles')) || [],
+    actions: JSON.parse(sessionStorage.getItem('actions')) || []
 };
 
 let fields = [];
@@ -17,9 +18,10 @@ const fetchAllData = () => {
   Promise.all([
     fetch('http://localhost/Proyecto1/api.php?resource=articles').then(response => response.json()),
     fetch('http://localhost/Proyecto1/api.php?resource=users').then(response => response.json()),
-    fetch('http://localhost/Proyecto1/api.php?resource=orders').then(response => response.json())
+    fetch('http://localhost/Proyecto1/api.php?resource=orders').then(response => response.json()),
+    fetch('http://localhost/Proyecto1/api.php?resource=actions').then(response => response.json())
   ])
-  .then(([articles, users, orders]) => {
+  .then(([articles, users, orders, actions]) => {
     // Verificar que las respuestas son arrays
     if (Array.isArray(articles)) {
       data.articles = articles;
@@ -42,10 +44,18 @@ const fetchAllData = () => {
       console.error('Error: orders response is not an array');
     }
 
+    if (Array.isArray(actions)) {
+      data.actions = actions;
+      sessionStorage.setItem('actions', JSON.stringify(actions));
+    } else {
+      console.error('Error: actions response is not an array');
+    }
+
     // Renderizamos las tablas con los nuevos datos
     renderTable('articles');
     renderTable('users');
     renderTable('orders');
+    renderTable('actions');
   })
   .catch(error => {
     console.error('Error fetching all data:', error);
@@ -53,6 +63,17 @@ const fetchAllData = () => {
   .finally(() => {
     console.log("Datos cargados");
   });
+};
+
+// Función para convertir el precio según la moneda seleccionada
+const convertPrice = (price) => {
+  const currency = document.getElementById('currencySelector').value;
+  return (price * exchangeRates[currency]).toFixed(2);
+};
+
+// Función para actualizar los precios según la moneda seleccionada
+const updatePrices = () => {
+  renderTable('articles');
 };
 
 // Render table for a given section
@@ -80,6 +101,10 @@ const renderTable = (section) => {
       items = items.sort((a, b) => sortOrder === 'asc' ? a.price - b.price : b.price - a.price);
       $orderfield = 'price';
       break;
+    case 'actions':
+      items = items.sort((a, b) => sortOrder === 'asc' ? a.id - b.id : b.id - a.id);
+      $orderfield = 'id';
+      break;
   }
 
   // Generar el contenido de los filtros y el botón de ordenación
@@ -105,10 +130,10 @@ const renderTable = (section) => {
       <tbody>
         ${items.map((item, index) => `
           <tr>
-            ${Object.values(item).map((value, i) => `<td>${i === 4 ? convertPrice(value) : value}</td>`).join('')}
+            ${Object.values(item).map((value, i) => `<td>${(i === 4 & section == 'articles') ? convertPrice(value) : value}</td>`).join('')}
             <td>
-              <button class="btn btn-warning btn-sm" onclick="showUpdateForm('${section}', ${index})">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteItem('${section}', ${index})">Delete</button>
+              <button class="btn btn-warning btn-sm" onclick="showUpdateForm('${section}', ${index})"${(section== 'actions' ? "disabled" : "")}>Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteItem('${section}', ${index})"${(section== 'actions' ? "disabled" : "")}>Delete</button>
             </td>
           </tr>
         `).join('')}
@@ -163,10 +188,10 @@ const renderTableWithSortedData = (section, sortedData) => {
       <tbody>
         ${sortedData.map((item, index) => `
           <tr>
-            ${Object.values(item).map((value, i) => `<td>${i === 2 ? convertPrice(value) : value}</td>`).join('')}
+            ${Object.values(item).map((value, i) => `<td>${(i === 4 & section == 'articles') ? convertPrice(value) : value}</td>`).join('')}
             <td>
-              <button class="btn btn-warning btn-sm" onclick="showUpdateForm('${section}', ${index})">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteItem('${section}', ${index})">Delete</button>
+              <button class="btn btn-warning btn-sm" onclick="showUpdateForm('${section}', ${index})"${(section == 'actions' ? "disabled" : "")}>Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteItem('${section}', ${index})"${(section == 'actions' ? "disabled" : "")}>Delete</button>
             </td>
           </tr>
         `).join('')}
@@ -175,17 +200,6 @@ const renderTableWithSortedData = (section, sortedData) => {
   `;
 
   container.innerHTML = container.innerHTML.split('</div>')[0] + '</div>' + tableHtml;
-};
-
-// Función para convertir el precio según la moneda seleccionada
-const convertPrice = (price) => {
-  const currency = document.getElementById('currencySelector').value;
-  return (price * exchangeRates[currency]).toFixed(2);
-};
-
-// Función para actualizar los precios según la moneda seleccionada
-const updatePrices = () => {
-  renderTable('articles');
 };
 
 // Función para crear un artículo, usuario o pedido
@@ -268,8 +282,6 @@ const updateItem = (section, index) => {
       alert('An error occurred while updating the item.');
     });
 };
-  
-
 
 // Función para eliminar un artículo, usuario o pedido
 const deleteItem = (section, index) => {
@@ -305,8 +317,6 @@ const deleteItem = (section, index) => {
     });
   }
 };
-
-
 
 // Mostrar el formulario para agregar elementos
 const showCreateForm = (section) => {
@@ -394,7 +404,7 @@ const showUpdateForm = (section,index) => {
 // Inicializar las tablas
 const initializeTables = () => {
   console.log('Inicializando tablas...');
-  ['users', 'orders', 'articles'].forEach(renderTable); // Renderizamos las tablas inicialmente
+  ['users', 'orders', 'articles','actions'].forEach(renderTable); // Renderizamos las tablas inicialmente
   fetchAllData();  // Cargamos los datos de la API al iniciar
 };
 

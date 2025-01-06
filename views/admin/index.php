@@ -12,6 +12,9 @@
       <li class="nav-item">
         <a class="nav-link admin-tab-link" id="articles-tab" data-bs-toggle="tab" href="#articles" role="tab" aria-controls="articles" aria-selected="false">Articles</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link admin-tab-link" id="actions-tab" data-bs-toggle="tab" href="#actions" role="tab" aria-controls="actions" aria-selected="false">Actions</a>
+      </li>
     </ul>
 
     <!-- Tab Content -->
@@ -51,6 +54,12 @@
         </div>
         <div id="articlesTableContainer" class="table-container"></div>
       </div>
+
+      <!-- Actions Section -->
+      <div class="tab-pane fade admin-tab-content" id="actions" role="tabpanel" aria-labelledby="actions-tab">
+        <h3 class="section-title">Actions Register</h3>
+        <div id="actionsTableContainer" class="table-container"></div>
+      </div>
     </div>
   </div>
 
@@ -75,7 +84,8 @@
     </div>
   </div>
 
-  <script src="javascript/admin.js" defer></script>
   <script src="javascript/currencyAPI.js" defer></script>
+  <script src="javascript/APIManager.js" defer></script>
+  <script src="javascript/admin.js" defer></script>
 
 

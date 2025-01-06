@@ -2,9 +2,11 @@
 
 include_once("models/CategoryDAO.php");
 include_once("models/ArticleDAO.php");
+include_once("models/AllergyDAO.php");
 include_once("models/Complement.php");
 include_once("models/Product.php");
 include_once("models/Category.php");
+include_once("models/Allergy.php");
 
 class restaurantController {
 
@@ -22,8 +24,10 @@ class restaurantController {
     public function categories() {
         session_start();
 
+        $products = ArticleDAO::indexProductsById();
+        $complements = ArticleDAO::indexComplementsById();
         $categories = CategoryDAO::getCategories();
-        $products = ArticleDAO::getProducts();
+        $allergens = AllergyDAO::getAllergies();
          
         $view="views/categorias.php";
 

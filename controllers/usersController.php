@@ -77,7 +77,8 @@ class usersController{
 
         if (!$mailExists) {
 
-            $user = UserDAO::register($name, $surname, $mail, $password);
+            $userId = UserDAO::register($name, $surname, $mail, $password);
+            $user = UserDAO::getUserById($userId);
 
             if ($user != null) {
 
@@ -118,8 +119,6 @@ class usersController{
         session_start();
 
         unset($_SESSION['user']);
-
-        
 
         header("Location:?controller=restaurant");
     }

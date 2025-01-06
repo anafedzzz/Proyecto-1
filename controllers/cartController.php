@@ -2,6 +2,7 @@
 
 include_once("models/CategoryDAO.php");
 include_once("models/ArticleDAO.php");
+include_once("models/OrderDAO.php");
 include_once("models/OrderLine.php");
 include_once("models/Complement.php");
 include_once("models/Product.php");
@@ -10,14 +11,15 @@ include_once("models/Category.php");
 class cartController{
 
     public function index() {
-        header("Location:?controller=restaurant&action=index");
+        header("Location:?controller=cart&action=show");
     }
     
     public function show() {
         
         session_start();
 
-        $articles = ArticleDAO::indexProductsById();
+        $complements = ArticleDAO::indexComplementsById();
+        $products = ArticleDAO::indexProductsById();
         $categories = CategoryDAO::getCategories();
 
         $view="views/carrito.php";
@@ -32,6 +34,27 @@ class cartController{
         array_pop($_SESSION['cart']);
 
         var_dump($_SESSION['cart']);
+    }
+
+    public function quantity() {
+        
+        session_start();
+
+        if ($_POST['quantity'] == 0) {
+            array_splice($_SESSION['cart'], $_POST['pos'], 1);
+        } else {
+            $_SESSION['cart'][$_POST['pos']]->setQuantity($_POST['quantity']);
+        }
+
+        header("Location:?controller=cart&action=show");
+    }
+
+    public function remove() {
+        session_start();
+
+        array_splice($_SESSION['cart'], $_GET['pos'], 1);
+
+        header("Location:?controller=cart&action=show");
     }
 
     public function addCart(){
@@ -57,10 +80,27 @@ class cartController{
                         }
                     }
 
-                    if ($pedidoExistente == false) { //TODO
+                    if ($pedidoExistente == false) {
                         $order_line = new OrderLine($article_id,$quantity,ArticleDAO::getPrice($_POST['id']));
                         array_push($_SESSION['cart'], $order_line);
                     }
+                }else if (isset($_GET['id'])) {
+                    $article_id = $_GET['id'];
+                    $pedidoExistente = false;
+
+                    foreach ($_SESSION['cart'] as $order_line) {
+                        if ($order_line->getArticleId() == $article_id) {
+                            $order_line->setQuantity($order_line->getQuantity() + $quantity);
+                            $pedidoExistente = true;
+                            break;
+                        }
+                    }
+
+                    if ($pedidoExistente == false) {
+                        $order_line = new OrderLine($article_id,$quantity,ArticleDAO::getPrice($_GET['id']));
+                        array_push($_SESSION['cart'], $order_line);
+                    }
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
                 }
             }
 
@@ -72,36 +112,86 @@ class cartController{
         }
     }
 
-    public function deleteCart()
-    {
+    public function complete() {
         session_start();
 
-        if (isset($_POST['id'])) {
+        $orderId = OrderDAO::createOrder($_SESSION['user']->getId(), date("Y-m-d H:i:s"), 'Completed');
 
-            $pos = $_POST['pos'];
-
-            unset($_SESSION['cart'][$pos]);
-
-            $_SESSION['cart'] = array_values($_SESSION['cart']);
+        if ($orderId != 0) {
+            $lineNumber = 1;
+            foreach ($_SESSION['cart'] as $order_line) {
+                OrderDAO::createOrderLine($orderId, $lineNumber, $order_line->getArticleId(), $order_line->getQuantity(), $order_line->getPrice(), $order_line->getTotal());
+                $lineNumber++;
+            }
         }
 
-        header("Location:?controller=producto&action=compra");
+        unset($_SESSION['cart']);
+
+        header("Location:?controller=cart&action=confirmation&id=$orderId");
     }
+
+    public function confirmation() {
+        session_start();
+
+        $order = OrderDAO::getOrder($_GET['id']);
+
+        if ($order->getUser_id() != $_SESSION['user']->getId()) {
+            header("Location:?controller=restaurant");
+        }
+
+        $order_lines = OrderDAO::getOrderLines($_GET['id']);
+        $products = ArticleDAO::indexProductsById();
+        $complements = ArticleDAO::indexComplementsById();
+
+        $view="views/confirmation.php";
+
+        include_once("views/main.php");
+    }
+
+    public function orderAgain() {
+        session_start();
+
+        $order = OrderDAO::getOrder($_GET['id']);
+
+        if ($order->getUser_id() != $_SESSION['user']->getId()) {
+            header("Location:?controller=restaurant");
+        }else{
+            $_SESSION['cart'] = OrderDAO::getOrderLines($_GET['id']);
+        }
+
+        header("Location:?controller=cart&action=show");
+    }
+
+    // public function deleteCart()
+    // {
+    //     session_start();
+
+    //     if (isset($_POST['id'])) {
+
+    //         $pos = $_POST['pos'];
+
+    //         unset($_SESSION['cart'][$pos]);
+
+    //         $_SESSION['cart'] = array_values($_SESSION['cart']);
+    //     }
+
+    //     header("Location:?controller=producto&action=compra");
+    // }
     
-    public function updateCart()
-    {
-        session_start();
+    // public function updateCart()
+    // {
+    //     session_start();
 
-        if (isset($_POST['id'])) {
+    //     if (isset($_POST['id'])) {
 
-            $pos = $_POST['pos'];
+    //         $pos = $_POST['pos'];
 
-            unset($_SESSION['cart'][$pos]);
+    //         unset($_SESSION['cart'][$pos]);
 
-            $_SESSION['cart'] = array_values($_SESSION['cart']);
-        }
+    //         $_SESSION['cart'] = array_values($_SESSION['cart']);
+    //     }
 
-        header("Location:?controller=producto&action=compra");
-    }
+    //     header("Location:?controller=producto&action=compra");
+    // }
 
 }

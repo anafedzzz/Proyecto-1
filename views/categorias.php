@@ -15,49 +15,68 @@
 <section class="categorias container-fluid d-flex">
     <div class="filtros col-3">
         <b>Filtrar por</b>
-        <div class="accordion">
+        <div class="accordion" id="filtersAccordion">
+            <!-- Categoría -->
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                    Categoría
-                </button>
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#categoryFilter" aria-expanded="false">
+                        Categoría
+                    </button>
                 </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <?php 
-                    foreach ($categories as $category) {}
-                        ?>
-                </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                    Precio
-                </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                <div class="accordion-body">
-                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                    Alérgenos
-                </button>
-                </h2>
-                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                <div id="categoryFilter" class="accordion-collapse collapse">
                     <div class="accordion-body">
-
-                        
-
+                        <?php foreach ($categories as $category): ?>
+                            <div class="form-check">
+                                <input class="form-check-input category-filter" type="checkbox" value="<?= $category->getId() ?>" id="category_<?= $category->getId() ?>">
+                                <label class="form-check-label" for="category_<?= $category->getId() ?>">
+                                    <?= $category->getName() ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
+
+            <!-- Precio -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#priceFilter" aria-expanded="false">
+                        Precio
+                    </button>
+                </h2>
+                <div id="priceFilter" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <label for="minPrice" class="form-label">Precio mínimo:</label>
+                        <input type="number" id="minPrice" class="form-control price-filter" placeholder="Min">
+                        <label for="maxPrice" class="form-label mt-2">Precio máximo:</label>
+                        <input type="number" id="maxPrice" class="form-control price-filter" placeholder="Max">
+                    </div>
+                </div>
             </div>
+
+            <!-- Alérgenos -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#allergensFilter" aria-expanded="false">
+                        Alérgenos
+                    </button>
+                </h2>
+                <div id="allergensFilter" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <?php foreach ($allergens as $allergen): ?>
+                            <div class="form-check">
+                                <input class="form-check-input allergen-filter" type="checkbox" value="<?= $allergen->getId() ?>" id="allergen_<?= $allergen->getId() ?>">
+                                <label class="form-check-label" for="allergen_<?= $allergen->getId() ?>">
+                                    <?= $allergen->getName() ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="productos-container">
 
         <?php 

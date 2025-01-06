@@ -4,10 +4,7 @@ include_once("models/Article.php");
 class Complement extends Article {
     private $specialOffers; // Ofertas especiales asociadas al complemento
 
-    public function __construct($category_id, $name, $description, $price, $type, $specialOffers = []) {
-        parent::__construct($category_id, $name, $description, $price, $type);
-        $this->specialOffers = $specialOffers;
-    }
+    public function __construct() {}
 
     public function getSpecialOffers() {
         return $this->specialOffers;

@@ -40,6 +40,20 @@ class ArticleDAO {
 
         return $articles;
     }
+
+    public static function indexComplementsById() {
+        $conn = DBConnection::connection();
+        $stmt = $conn->prepare("SELECT * FROM ARTICLE WHERE type = 'complement'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $articles = [];
+        while($rows = $result->fetch_object('Complement')) {
+            $articles[$rows->getId()] = $rows;
+        }
+        $conn->close();
+        
+        return $articles;
+    }
     
 
     public static function getProducts($order = 'id') {
@@ -112,9 +126,10 @@ class ArticleDAO {
         //TODO
 
         $result = $stmt->execute();
+        $id = $conn->insert_id;
+        
         $conn->close();
-
-        return $result;
+        return $id;
     }
 
     public static function update($id,$category_id,$name,$description,$price,$type,$IMG,$novedad) {
@@ -123,9 +138,10 @@ class ArticleDAO {
         $stmt->bind_param("issdssii", $category_id, $name, $description, $price, $type, $IMG, $novedad, $id);
 
         $result = $stmt->execute();
+        $id = $conn->insert_id;
+        
         $conn->close();
-
-        return $result;
+        return $id;
     }
 
     public static function destroy($id){

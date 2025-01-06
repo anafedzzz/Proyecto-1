@@ -1,4 +1,4 @@
-class APIManager {
+ class APIManager {
     constructor(baseURL) {
         this.baseURL = baseURL;
     }
@@ -81,6 +81,3 @@ class APIManager {
           });
     }
 }
-
-export default APIManager;
-  
