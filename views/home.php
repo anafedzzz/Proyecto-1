@@ -7,7 +7,7 @@
             <p>UNA EXPERIENCIA CULINARIA DE ALTO RENDIMIENTO</p>
             <p>DONDE LA PASIÓN POR EL MOTOR SE ENCUENTRA CON LA GASTRONOMÍA</p>
         </div>
-        <a class="button-primary-dark" href="#">Probar productos</a>
+        <a class="button-primary-dark" href="?controller=restaurant&action=categories">Probar productos</a>
     </div>
 </section>
 <section class="categories-home container-fluid">
